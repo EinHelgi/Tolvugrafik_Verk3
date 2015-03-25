@@ -149,54 +149,6 @@ function scale4( x, y, z )
     return result;
 }
 
-/*function ITriomino(x, y, z, ctm) {
-
-    ctmstack.push(ctm);
-    ctm = mult( ctm, translate( x, y, z) );
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
-    //ctm = mult( ctm, translate( x, y, z) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    renderCube();// teikna cube
-
-    ctm = ctmstack.pop();
-    ctmstack.push(ctm);
-    ctm = mult( ctm, translate( 0.2+x, y, z) );
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
-    //ctm = mult( ctm, translate( 1.0+x, y, z) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    renderCube();// teikna cube
-
-    ctm = ctmstack.pop();
-    ctmstack.push(ctm);
-    ctm = mult( ctm, translate( -0.2+x, y, z) );
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
-    //ctm = mult( ctm, translate( -1.0+x, y, z) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    renderCube();// teikna cube
-}
-
-function LTriomino(x, y, z, ctm) {
-    ctmstack.push(ctm);
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
-    ctm = mult( ctm, translate( x, y, z) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    renderCube();// teikna cube
-
-    ctm = ctmstack.pop();
-    ctmstack.push(ctm);
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
-    ctm = mult( ctm, translate( x, 1.0+y, z) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    renderCube();// teikna cube
-
-    ctm = ctmstack.pop();
-    ctmstack.push(ctm);
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
-    ctm = mult( ctm, translate( 1.0+x, y, z) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    renderCube();// teikna cube
-}*/
-
 function rotateStuff(ctm) {
     var x = 0.0, y = 0.0, z = 0.0;
     ctm = mult( ctm, rotate( rotX, [1, 0, 0] ) );
@@ -217,11 +169,8 @@ function render()
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
     renderAxis();
 
-    var offset = 0.0; // Offset tímabundið bara sett hér en skynsamara að hafa það inní föllunum
     ctmstack.push(ctm);
     ctm = rotateStuff(ctm);
-    //ITriomino(0.0+offset, 0.0+offset, -0.0+offset, ctm); // Er að staðsetja þá svo þeir skeri ekki ása
-    //LTriomino(0.5+offset, 0.5+offset, -0.5-offset, ctm); // Hvernig lýst þér á að hafa það þannig?
     renderI(ctm)
 
     ctm = ctmstack.pop();
