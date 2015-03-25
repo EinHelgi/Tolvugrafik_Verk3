@@ -1,3 +1,4 @@
+
 /////////////////////////////////////////////////////////////////
 //      gert fyrir verkefni í Tölvugrafík
 //
@@ -23,6 +24,8 @@ var zDist = -4.5;
 
 var proLoc;
 var mvLoc;
+
+var ctmstack = []; // Er þetta sniðugt?
 
 
 window.onload = function init()
@@ -120,11 +123,54 @@ function scale4( x, y, z )
     return result;
 }
 
+function ITriomino(x, y, z, ctm) {
+
+    ctmstack.push(ctm);
+    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
+    ctm = mult( ctm, translate( x, y, z) );
+    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+    renderCube();// teikna cube
+
+    ctm = ctmstack.pop();
+    ctmstack.push(ctm);
+    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
+    ctm = mult( ctm, translate( 1.0+x, y, z) );
+    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+    renderCube();// teikna cube
+
+    ctm = ctmstack.pop();
+    ctmstack.push(ctm);
+    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
+    ctm = mult( ctm, translate( -1.0+x, y, z) );
+    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+    renderCube();// teikna cube
+}
+
+function LTriomino(x, y, z, ctm) {
+    ctmstack.push(ctm);
+    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
+    ctm = mult( ctm, translate( x, y, z) );
+    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+    renderCube();// teikna cube
+
+    ctm = ctmstack.pop();
+    ctmstack.push(ctm);
+    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
+    ctm = mult( ctm, translate( x, 1.0+y, z) );
+    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+    renderCube();// teikna cube
+
+    ctm = ctmstack.pop();
+    ctmstack.push(ctm);
+    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
+    ctm = mult( ctm, translate( 1.0+x, y, z) );
+    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+    renderCube();// teikna cube
+}
+
 function render()
 {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-    var ctmstack = [];
 
     var ctm = lookAt( vec3(0.0, 0.0, zDist), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0) );
     ctm = mult( ctm, rotate( parseFloat(spinX), [1, 0, 0] ) );
@@ -132,32 +178,9 @@ function render()
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
     renderAxis();
 
-    ctmstack.push(ctm);
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    renderCube();// teikna cube
-
-    ctm = ctmstack.pop();
-    ctmstack.push(ctm);
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
-    ctm = mult( ctm, translate( 1.0, 0.0, 0.0 ) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    renderCube();// teikna cube
-
-    ctm = ctmstack.pop();
-    ctmstack.push(ctm);
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
-    ctm = mult( ctm, translate( 2.0, 0.0, 0.0 ) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    renderCube();// teikna cube
-
-    ctm = ctmstack.pop();
-    ctmstack.push(ctm);
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
-    ctm = mult( ctm, translate( 2.0, 1.0, 0.0 ) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    renderCube();// teikna cube
-
+    var offset = 0.02; // Offset tímabundið bara sett hér en skynsamara að hafa það inní föllunum
+    ITriomino(0.5+offset, 0.5+offset, 0.5+offset, ctm); // Er að staðsetja þá svo þeir skeri ekki ása
+    LTriomino(0.5+offset, 0.5+offset, -0.5-offset, ctm); // Hvernig lýst þér á að hafa það þannig?
+    
     requestAnimFrame( render );
 }
-
