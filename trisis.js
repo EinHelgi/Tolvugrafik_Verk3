@@ -15,6 +15,10 @@ var vPosition;
 
 var movement = false;     // Do we rotate?
 
+var rotX = 0;
+var rotY = 0;
+var rotZ = 0;
+
 var spinX = 0;
 var spinY = 0;
 var origX;
@@ -90,6 +94,26 @@ window.onload = function init()
     
     // Event listener for keyboard
      window.addEventListener("keydown", function(e){
+        console.log(e.keyCode );
+        switch( e.keyCode ) {
+            case 37:    // left arrow
+                console.log("left" );
+                break;
+            case 38:    // up arrow
+                console.log("up" );
+                rotX += 90;
+                break;
+            case 39:    // right arrow
+                console.log("right" );
+                break;
+            case 40:    // down arrow
+                console.log("down" );
+                break;
+         }
+     }  );  
+
+     // Event listener for keyboard
+     window.addEventListener("keyup", function(e){
 
      }  );  
 
@@ -168,6 +192,12 @@ function LTriomino(x, y, z, ctm) {
     renderCube();// teikna cube
 }
 
+function rotateY(ctm) {
+    //ctm = mult( ctm, translate( 0.0, 0.0, -0.2 ) );
+    ctm = mult( ctm, rotate( rotX, [1, 0, 0] ) );
+    return ctm;
+}
+
 function render()
 {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -178,8 +208,9 @@ function render()
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
     renderAxis();
 
-    var offset = 0.02; // Offset tímabundið bara sett hér en skynsamara að hafa það inní föllunum
-    ITriomino(0.5+offset, 0.5+offset, 0.5+offset, ctm); // Er að staðsetja þá svo þeir skeri ekki ása
+    var offset = 0.0; // Offset tímabundið bara sett hér en skynsamara að hafa það inní föllunum
+    //ITriomino(0.5+offset, 0.5+offset, 0.5+offset, ctm); // Er að staðsetja þá svo þeir skeri ekki ása
+    ctm = rotateY(ctm);
     LTriomino(0.5+offset, 0.5+offset, -0.5-offset, ctm); // Hvernig lýst þér á að hafa það þannig?
     
     requestAnimFrame( render );
