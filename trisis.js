@@ -29,8 +29,6 @@ var zDist = -4.5;
 var proLoc;
 var mvLoc;
 
-var ctmstack = []; // Er þetta sniðugt?
-
 
 window.onload = function init()
 {
@@ -39,7 +37,8 @@ window.onload = function init()
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
-    colorCube();
+    colorL();
+    colorI();
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 0.9, 1.0, 1.0, 1.0 );
@@ -52,9 +51,10 @@ window.onload = function init()
     var program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
 
-    bufferCube();
     bufferLine();
     bufferAxis();
+    bufferI();
+    bufferL();
 
     vColor = gl.getAttribLocation( program, "vColor" );
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
@@ -97,15 +97,15 @@ window.onload = function init()
         //console.log(e.keyCode );
         switch( e.keyCode ) {
             case 37:    // left arrow
-                console.log("left" );
+                console.log("Y" );
                 rotY += 90;
                 break;
             case 38:    // up arrow
-                console.log("up" );
+                console.log("X" );
                 rotX += 90;
                 break;
             case 39:    // right arrow
-                console.log("right" );
+                console.log("Z" );
                 rotZ += 90;
                 break;
             case 40:    // down arrow
@@ -149,25 +149,28 @@ function scale4( x, y, z )
     return result;
 }
 
-function ITriomino(x, y, z, ctm) {
+/*function ITriomino(x, y, z, ctm) {
 
     ctmstack.push(ctm);
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
     ctm = mult( ctm, translate( x, y, z) );
+    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
+    //ctm = mult( ctm, translate( x, y, z) );
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
     renderCube();// teikna cube
 
     ctm = ctmstack.pop();
     ctmstack.push(ctm);
+    ctm = mult( ctm, translate( 0.2+x, y, z) );
     ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
-    ctm = mult( ctm, translate( 1.0+x, y, z) );
+    //ctm = mult( ctm, translate( 1.0+x, y, z) );
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
     renderCube();// teikna cube
 
     ctm = ctmstack.pop();
     ctmstack.push(ctm);
+    ctm = mult( ctm, translate( -0.2+x, y, z) );
     ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
-    ctm = mult( ctm, translate( -1.0+x, y, z) );
+    //ctm = mult( ctm, translate( -1.0+x, y, z) );
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
     renderCube();// teikna cube
 }
@@ -192,18 +195,10 @@ function LTriomino(x, y, z, ctm) {
     ctm = mult( ctm, translate( 1.0+x, y, z) );
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
     renderCube();// teikna cube
-}
+}*/
 
 function rotateStuff(ctm) {
-    /*if(rotX === 360) rotX = 0;
-    if(rotX === 90 || rotY === 270) ctm = mult( ctm, translate( 0.0, 0.0, -0.2 ) );
-    if(rotX === 180) ctm = mult( ctm, translate( 0.0, 0.2, -0.2 ) );
-    if(rotX === 270 || rotZ === 270) ctm = mult( ctm, translate( 0.0, 0.2, 0.0 ) );
-    if(rotY === 360) rotY = 0;
-    if(rotY === 90 || rotZ === 90) ctm = mult( ctm, translate( 0.2, 0.0, 0.0 ) );
-    if(rotY === 180) ctm = mult( ctm, translate( 0.2, 0.0, -0.2 ) );
-    if(rotZ === 360) rotZ = 0;
-    if(rotZ === 180) ctm = mult( ctm, translate( 0.2, 0.2, 0.0 ) );*/
+    var x = 0.0, y = 0.0, z = 0.0;
     ctm = mult( ctm, rotate( rotX, [1, 0, 0] ) );
     ctm = mult( ctm, rotate( rotY, [0, 1, 0] ) );
     ctm = mult( ctm, rotate( rotZ, [0, 0, 1] ) );
@@ -214,6 +209,7 @@ function rotateStuff(ctm) {
 function render()
 {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    var ctmstack = [];
 
     var ctm = lookAt( vec3(0.0, 0.0, zDist), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0) );
     ctm = mult( ctm, rotate( parseFloat(spinX), [1, 0, 0] ) );
@@ -222,9 +218,16 @@ function render()
     renderAxis();
 
     var offset = 0.0; // Offset tímabundið bara sett hér en skynsamara að hafa það inní föllunum
+    ctmstack.push(ctm);
     ctm = rotateStuff(ctm);
-    ITriomino(0.5+offset, 0.5+offset, -0.5+offset, ctm); // Er að staðsetja þá svo þeir skeri ekki ása
+    //ITriomino(0.0+offset, 0.0+offset, -0.0+offset, ctm); // Er að staðsetja þá svo þeir skeri ekki ása
     //LTriomino(0.5+offset, 0.5+offset, -0.5-offset, ctm); // Hvernig lýst þér á að hafa það þannig?
+    renderI(ctm)
+
+    ctm = ctmstack.pop();
+    ctm = mult( ctm, translate( 1.0, 0.0, 1.0) );
+    ctm = rotateStuff(ctm);
+    renderL(ctm);
     
     requestAnimFrame( render );
 }
