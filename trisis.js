@@ -39,6 +39,7 @@ window.onload = function init()
 
     colorL();
     colorI();
+    entityManager.init();
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 0.9, 1.0, 1.0, 1.0 );
@@ -51,10 +52,10 @@ window.onload = function init()
     var program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
 
-    bufferLine();
+    //bufferLine();
     bufferAxis();
     bufferI();
-    bufferL();
+    //bufferL();
 
     vColor = gl.getAttribLocation( program, "vColor" );
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
@@ -171,12 +172,13 @@ function render()
 
     ctmstack.push(ctm);
     ctm = rotateStuff(ctm);
-    renderI(ctm)
+    //renderI(ctm)
+    entityManager.render(ctm);
 
-    ctm = ctmstack.pop();
+    /*ctm = ctmstack.pop();
     ctm = mult( ctm, translate( 1.0, 0.0, 1.0) );
-    ctm = rotateStuff(ctm);
-    renderL(ctm);
+    ctm = rotateStuff(ctm);*/
+    //renderL(ctm);
     
     requestAnimFrame( render );
 }

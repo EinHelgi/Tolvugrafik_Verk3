@@ -27,7 +27,8 @@ var entityManager = {
 
 // "PRIVATE" DATA
 
-_entities : [],
+_I_beam : [],
+_L_beam : [],
 
 // "PRIVATE" METHODS
 
@@ -48,11 +49,20 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    //this._categories = [_entities];
+    this._categories = [this._I_beam, this._L_beam];
 },
 
 init: function() {
-    
+    this.generateI_beam();
+    this.generateL_beam();
+},
+
+generateI_beam : function(descr) {
+    this._I_beam.push(new I_beam(descr));
+},
+
+generateL_beam : function(descr) {
+    this._L_beam.push(new L_beam(descr));
 },
 
 update: function(du) {
@@ -79,7 +89,7 @@ update: function(du) {
 
 },
 
-render: function(ctx) {
+render: function(ctm) {
 
     var debugX = 10, debugY = 100;
 
@@ -88,8 +98,9 @@ render: function(ctx) {
         var aCategory = this._categories[c];
 
         for (var i = 0; i < aCategory.length; ++i) {
+            if(i===0) aCategory[i].buffer();
 
-            aCategory[i].render(ctx);
+            aCategory[i].render(ctm);
 
         }
         debugY += 10;
@@ -100,4 +111,3 @@ render: function(ctx) {
 
 // Some deferred setup which needs the object to have been created first
 entityManager.deferredSetup();
-
