@@ -94,10 +94,11 @@ window.onload = function init()
     
     // Event listener for keyboard
      window.addEventListener("keydown", function(e){
-        console.log(e.keyCode );
+        //console.log(e.keyCode );
         switch( e.keyCode ) {
             case 37:    // left arrow
                 console.log("left" );
+                rotY += 90;
                 break;
             case 38:    // up arrow
                 console.log("up" );
@@ -105,6 +106,7 @@ window.onload = function init()
                 break;
             case 39:    // right arrow
                 console.log("right" );
+                rotZ += 90;
                 break;
             case 40:    // down arrow
                 console.log("down" );
@@ -192,11 +194,22 @@ function LTriomino(x, y, z, ctm) {
     renderCube();// teikna cube
 }
 
-function rotateY(ctm) {
-    //ctm = mult( ctm, translate( 0.0, 0.0, -0.2 ) );
+function rotateStuff(ctm) {
+    /*if(rotX === 360) rotX = 0;
+    if(rotX === 90 || rotY === 270) ctm = mult( ctm, translate( 0.0, 0.0, -0.2 ) );
+    if(rotX === 180) ctm = mult( ctm, translate( 0.0, 0.2, -0.2 ) );
+    if(rotX === 270 || rotZ === 270) ctm = mult( ctm, translate( 0.0, 0.2, 0.0 ) );
+    if(rotY === 360) rotY = 0;
+    if(rotY === 90 || rotZ === 90) ctm = mult( ctm, translate( 0.2, 0.0, 0.0 ) );
+    if(rotY === 180) ctm = mult( ctm, translate( 0.2, 0.0, -0.2 ) );
+    if(rotZ === 360) rotZ = 0;
+    if(rotZ === 180) ctm = mult( ctm, translate( 0.2, 0.2, 0.0 ) );*/
     ctm = mult( ctm, rotate( rotX, [1, 0, 0] ) );
+    ctm = mult( ctm, rotate( rotY, [0, 1, 0] ) );
+    ctm = mult( ctm, rotate( rotZ, [0, 0, 1] ) );
     return ctm;
 }
+
 
 function render()
 {
@@ -209,9 +222,9 @@ function render()
     renderAxis();
 
     var offset = 0.0; // Offset tímabundið bara sett hér en skynsamara að hafa það inní föllunum
-    //ITriomino(0.5+offset, 0.5+offset, 0.5+offset, ctm); // Er að staðsetja þá svo þeir skeri ekki ása
-    ctm = rotateY(ctm);
-    LTriomino(0.5+offset, 0.5+offset, -0.5-offset, ctm); // Hvernig lýst þér á að hafa það þannig?
+    ctm = rotateStuff(ctm);
+    ITriomino(0.5+offset, 0.5+offset, -0.5+offset, ctm); // Er að staðsetja þá svo þeir skeri ekki ása
+    //LTriomino(0.5+offset, 0.5+offset, -0.5-offset, ctm); // Hvernig lýst þér á að hafa það þannig?
     
     requestAnimFrame( render );
 }
