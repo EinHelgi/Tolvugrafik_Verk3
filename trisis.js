@@ -39,7 +39,6 @@ window.onload = function init()
 
     colorL();
     colorI();
-    entityManager.init();
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 0.9, 1.0, 1.0, 1.0 );
@@ -55,7 +54,8 @@ window.onload = function init()
     //bufferLine();
     bufferAxis();
     bufferI();
-    //bufferL();
+    bufferL();
+    bufferBox();
 
     vColor = gl.getAttribLocation( program, "vColor" );
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
@@ -168,17 +168,20 @@ function render()
     ctm = mult( ctm, rotate( parseFloat(spinX), [1, 0, 0] ) );
     ctm = mult( ctm, rotate( parseFloat(spinY), [0, 1, 0] ) );
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    renderAxis();
+    //renderAxis();
 
     ctmstack.push(ctm);
     ctm = rotateStuff(ctm);
-    //renderI(ctm)
-    entityManager.render(ctm);
+    renderI(ctm)
 
-    /*ctm = ctmstack.pop();
+    ctm = ctmstack.pop();
+    ctmstack.push(ctm);
+    renderBox(ctm);
+
+    ctm = ctmstack.pop();
     ctm = mult( ctm, translate( 1.0, 0.0, 1.0) );
-    ctm = rotateStuff(ctm);*/
-    //renderL(ctm);
+    ctm = rotateStuff(ctm);
+    renderL(ctm);
     
     requestAnimFrame( render );
 }
