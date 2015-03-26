@@ -14,6 +14,7 @@ var vColor;
 var vPosition;
 
 var movement = false;     // Do we rotate?
+var pause = false;
 var tileSize = 0.2;
 var grid = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var floor = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
@@ -161,6 +162,9 @@ window.onload = function init()
                 //getTiles();
                 newBeam();
                 break;
+            case 80:    // "P" pause
+                pause = !pause;
+                break;
         }
      }  );  
 
@@ -188,23 +192,23 @@ function newBeam() {
     rotZ = rot[Math.floor(4*Math.random(4))];
     posM = [3, 1, 3];
     if(Math.random()<=0.5) isIbeam = !isIbeam;
-    count = 100;
+    count = 0.0;
+    updatePos();
 }
 
 function render()
 {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     var ctmstack = [];
-    //count+=2;
+
+    if(!pause) count+=2;
     if(Math.floor(count/100) == 1) {
         posM[1]++;
         count = 0;
     }
-    /*posM[1] = Math.floor(count/100);
-    if(count > 1950) {
-        newBeam();
-    }*/
-
+    if(count>50) {
+        checkIfLanding();
+    }
 
     var ctm = lookAt( vec3(0.0, 0.0, zDist), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0) );
     ctm = mult( ctm, rotate( parseFloat(spinX), [1, 0, 0] ) );

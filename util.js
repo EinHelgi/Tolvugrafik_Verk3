@@ -34,7 +34,7 @@ function toRadians (angle) {
 }
 
 function checkOutofBounds() {
-    getTiles();
+    updatePos();
     if(posM[0]<0 || posL[0]<0 || posR[0]<0 || posM[0]>5 || posL[0]>5 || posR[0]>5 ||
        posM[2]>5 || posL[2]>5 || posR[2]>5 || posM[2]<0 || posL[2]<0 || posR[2]<0) {
         return true;
@@ -58,7 +58,7 @@ function calcPos(pos) {
     return [posM[0]+postemp[0], posM[1]+postemp[1], posM[2]+postemp[2]];
 }
 
-function getTiles() {
+function updatePos() {
     if(isIbeam) {
         posL = [-1,  0,  0];
         posR = [ 1,  0,  0];
@@ -69,5 +69,40 @@ function getTiles() {
     }
     posL = calcPos(posL);
     posR = calcPos(posR);
-    return [posL, posM, posR];
+}
+
+function checkIfLanding() {
+    updatePos();
+    var landing = false;
+    if(posR[1] === 19 || posM[1] === 19 || posL[1] === 19) {
+        count = 0.0;
+        landing = true;
+    }
+    if(grid[posR[1]+1] !== 0 || grid[posM[1]+1] !== 0 || grid[posL[1]+1] !== 0) {
+        //landing = true;
+    }
+    if(landing) landingBeam();
+}
+
+function landingBeam() {
+    count = 0.0;
+    if(grid[posL[1]] === 0) {
+        grid[posL[1]] = floor;
+        console.log("left");
+    }
+    if(grid[posM[1]] === 0) {
+        grid[posM[1]] = floor;
+        console.log("middle");
+    }
+    if(grid[posR[1]] === 0) {
+        grid[posR[1]] = floor;
+        console.log("rigth");
+    }
+    //grid[posL[1]][posL[0]][posL[2]] = 1;
+    grid[posM[1]][posM[0]][posM[2]] = 1;
+    //grid[posR[1]][posR[0]][posR[2]] = 1;
+    console.log(posL);
+    console.log(posM);
+    console.log(posR);
+    newBeam();
 }
