@@ -21,24 +21,30 @@ function makeBox() {
 }
 
 function quadBox(a) {
-    var vertices = [
-        vec3( 3.0, -10.0,  3.0 ),
-        vec3( 3.0, -10.0, -3.0 ),
-        vec3(-3.0, -10.0, -3.0 ),
-        vec3(-3.0, -10.0,  3.0 ),
-        vec3( 3.0,  10.0,  3.0 ),
-        vec3( 3.0,  10.0, -3.0 ),
-        vec3(-3.0,  10.0, -3.0 ),
-        vec3(-3.0,  10.0,  3.0 )
-    ]
+    for(var z = 0; z<6; ++z) {
+        for(var y = 0; y<20; ++y) {
+            for(var x = 0; x<6; ++x) {
+                var vertices = [
+                    vec3( 3.0-x, -10.0+y, -2.0+z ),
+                    vec3( 3.0-x, -10.0+y, -3.0+z ),
+                    vec3( 2.0-x, -10.0+y, -3.0+z ),
+                    vec3( 2.0-x, -10.0+y, -2.0+z ),
+                    vec3( 3.0-x,  -9.0+y, -2.0+z ),
+                    vec3( 3.0-x,  -9.0+y, -3.0+z ),
+                    vec3( 2.0-x,  -9.0+y, -3.0+z ),
+                    vec3( 2.0-x,  -9.0+y, -2.0+z )
+                ]
 
-    for ( var i = 0; i < a.length; ++i ) {
-        pointsBox.push( vertices[a[i]] );
-        //colors.push( vertexColors[indices[i]] );
-    
-        // for solid colored faces use 
-        colorsBox.push([ 0.0, 0.0, 0.0, 1.0 ]);
-        
+                for ( var i = 0; i < a.length; ++i ) {
+                    pointsBox.push( vertices[a[i]] );
+                    //colors.push( vertexColors[indices[i]] );
+                
+                    // for solid colored faces use 
+                    colorsBox.push([ 0.0, 0.0, 0.0, 0.5 ]);
+                    
+                }
+            }
+        }
     }
 }
 

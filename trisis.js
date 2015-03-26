@@ -171,6 +171,7 @@ function render()
     //renderAxis();
 
     ctmstack.push(ctm);
+    ctm = mult( ctm, translate( 0.1, 0.1, 0.1));
     ctm = rotateStuff(ctm);
     renderI(ctm)
 
@@ -179,7 +180,7 @@ function render()
     renderBox(ctm);
 
     ctm = ctmstack.pop();
-    ctm = mult( ctm, translate( 1.0, 0.0, 1.0) );
+    ctm = mult( ctm, translate( 0.5, 0.5, 0.5) );
     ctm = rotateStuff(ctm);
     renderL(ctm);
     

@@ -80,6 +80,7 @@ function renderI(ctm) {
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
     gl.bindBuffer( gl.ARRAY_BUFFER, IVBuffer );
     gl.vertexAttribPointer( vPosition, 3, gl.FLOAT, false, 0, 0 );
+
     ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
     gl.drawArrays( gl.TRIANGLES, 0, INumVertices );
