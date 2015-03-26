@@ -40,7 +40,7 @@ function quadBox(a) {
                     //colors.push( vertexColors[indices[i]] );
                 
                     // for solid colored faces use 
-                    colorsBox.push([ 0.0, 0.0, 0.0, 0.5 ]);
+                    colorsBox.push([ 0.0, 0.0, 0.0, 0.3 ]);
                     
                 }
             }

@@ -26,15 +26,16 @@ function colorCube()
 
 function quad(a, b, c, d) 
 {
+    var p = 0.48;
     var vertices = [
-        vec3( -0.5, -0.5,  0.5 ),
-        vec3( -0.5,  0.5,  0.5 ),
-        vec3(  0.5,  0.5,  0.5 ),
-        vec3(  0.5, -0.5,  0.5 ),
-        vec3( -0.5, -0.5, -0.5 ),
-        vec3( -0.5,  0.5, -0.5 ),
-        vec3(  0.5,  0.5, -0.5 ),
-        vec3(  0.5, -0.5, -0.5 )
+        vec3( -p, -p,  p ),
+        vec3( -p,  p,  p ),
+        vec3(  p,  p,  p ),
+        vec3(  p, -p,  p ),
+        vec3( -p, -p, -p ),
+        vec3( -p,  p, -p ),
+        vec3(  p,  p, -p ),
+        vec3(  p, -p, -p )
     ];
 
     var vertexColors = [
@@ -76,10 +77,13 @@ function bufferCube() {
     gl.bufferData( gl.ARRAY_BUFFER, flatten(pointsCube), gl.STATIC_DRAW );
 }
 
-function renderCube() {
+function renderCube(ctm) {
     gl.bindBuffer( gl.ARRAY_BUFFER, cubeCBuffer );
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
     gl.bindBuffer( gl.ARRAY_BUFFER, cubeVBuffer );
     gl.vertexAttribPointer( vPosition, 3, gl.FLOAT, false, 0, 0 );
+
+    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
+    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
     gl.drawArrays( gl.TRIANGLES, 0, CubeNumVertices );
 }
