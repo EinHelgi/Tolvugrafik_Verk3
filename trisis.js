@@ -17,13 +17,13 @@ var movement = false;     // Do we rotate?
 var pause = false;
 var tileSize = 0.2;
 var grid = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-var floor = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
 
 var isIbeam = false;
 var isBox = true;
+var speeding = false;
 var count = 0.0;
 var posL = [0, 0, 0];
-var posM = [2, 2, 2];
+var posM = [3, -2, 3];
 var posR = [0, 0, 0];
 
 var rotX = 0;
@@ -154,16 +154,24 @@ window.onload = function init()
                 posM[2]++;
                 if(checkOutofBounds()) posM[2]--;
                 break;
+            case 32:    // spacebar to speed game
+                speeding = true;
+                break;
 
-            case 66:    // "B" debug grid
+            case 66:    // "B" on/off grid
                 isBox = !isBox;
                 break;
             case 84:    // "T" testing
-                //getTiles();
                 newBeam();
                 break;
             case 80:    // "P" pause
                 pause = !pause;
+                break;
+            case 77:    // "M" makefloor 
+                makeFloor();
+                break;
+            case 75:    // "K" kill floor
+                checkGrid();
                 break;
         }
      }  );  
@@ -186,11 +194,12 @@ window.onload = function init()
 }
 
 function newBeam() {
+    speeding = false;
     var rot = [0, 90, 180, 270];
     rotX = rot[Math.floor(4*Math.random(4))];
     rotY = rot[Math.floor(4*Math.random(4))];
     rotZ = rot[Math.floor(4*Math.random(4))];
-    posM = [3, 1, 3];
+    posM = [3, -2, 3];
     if(Math.random()<=0.5) isIbeam = !isIbeam;
     count = 0.0;
     updatePos();
@@ -201,7 +210,8 @@ function render()
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     var ctmstack = [];
 
-    if(!pause) count+=2;
+    if(!pause) count+=4;
+    if(speeding) count+= 20;
     if(Math.floor(count/100) == 1) {
         posM[1]++;
         count = 0;
@@ -239,15 +249,21 @@ function render()
 
     for(var y=0; y<grid.length; ++y) {
         if(grid[y]!==0) {
+            var howMany = 0;
             for(var x=0; x<grid[y].length; ++x) {
                 for(var z=0; z<grid[y][x].length; ++z) {
                     if(grid[y][x][z] !== 0) {
                         ctm = ctmstack.pop();
                         ctmstack.push(ctm);
                         ctm = gotToTile(x, y, z, ctm);
+                        ctm = rotateStuff(grid[y][x][z][0], grid[y][x][z][1], grid[y][x][z][2], ctm);
                         renderCube(ctm);
                     }
+                    else {howMany++;}
                 }
+            }
+            if(howMany === 36) {
+                grid[y] = 0;
             }
         }
     }

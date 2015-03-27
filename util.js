@@ -39,6 +39,21 @@ function checkOutofBounds() {
        posM[2]>5 || posL[2]>5 || posR[2]>5 || posM[2]<0 || posL[2]<0 || posR[2]<0) {
         return true;
     }
+    if(grid[posR[1]] !== 0 && grid[posR[1]] !== undefined) {
+        if(grid[posR[1]][posR[0]][posR[2]] !== 0) {
+            return true;
+        }
+    }
+    if(grid[posM[1]] !== 0 && grid[posM[1]] !== undefined) {
+        if(grid[posM[1]][posM[0]][posM[2]] !== 0) {
+            return true;
+        }
+    }
+    if(grid[posL[1]] !== 0 && grid[posL[1]] !== undefined) {
+        if(grid[posL[1]][posL[0]][posL[2]] !== 0) {
+            return true;
+        }
+    }
     return false;
 }
 
@@ -78,31 +93,90 @@ function checkIfLanding() {
         count = 0.0;
         landing = true;
     }
-    if(grid[posR[1]+1] !== 0 || grid[posM[1]+1] !== 0 || grid[posL[1]+1] !== 0) {
-        //landing = true;
+    if(grid[posR[1]+1] !== 0 && grid[posR[1]+1] !== undefined) {
+        if(grid[posR[1]+1][posR[0]][posR[2]] !== 0) {
+            landing = true;
+        }
+    }
+    if(grid[posM[1]+1] !== 0 && grid[posM[1]+1] !== undefined) {
+        if(grid[posM[1]+1][posM[0]][posM[2]] !== 0) {
+            landing = true;
+        }
+    }
+    if(grid[posL[1]+1] !== 0 && grid[posL[1]+1] !== undefined) {
+        if(grid[posL[1]+1][posL[0]][posL[2]] !== 0) {
+            landing = true;
+        }
     }
     if(landing) landingBeam();
 }
 
 function landingBeam() {
     count = 0.0;
-    if(grid[posL[1]] === 0) {
-        grid[posL[1]] = floor;
-        console.log("left");
+    if(posM[1]<=0) return restartGame();
+
+    if(grid[posL[1]] === 0) grid[posL[1]] = giveEmptyFloor();
+    if(grid[posM[1]] === 0) grid[posM[1]] = giveEmptyFloor();
+    if(grid[posR[1]] === 0) grid[posR[1]] = giveEmptyFloor();
+
+    grid[posL[1]][posL[0]][posL[2]] = [rotX, rotY, rotZ];
+    grid[posM[1]][posM[0]][posM[2]] = [rotX, rotY, rotZ];
+    grid[posR[1]][posR[0]][posR[2]] = [rotX, rotY, rotZ];
+    
+    newBeam();
+}
+
+function checkGrid() {
+    var cubePerFloor;
+    for(var y=0; y<grid.length; ++y) {
+        if(grid[y]!==0) {
+            cubePerFloor = 0;
+            for(var x=0; x<grid[y].length; ++x) {
+                for(var z=0; z<grid[y][x].length; ++z) {
+                    if(grid[y][x][z] !== 0) {
+                        cubePerFloor++;
+                    }
+                }
+            }
+            if(cubePerFloor === 36) deleteFloor(y);
+        }
     }
-    if(grid[posM[1]] === 0) {
-        grid[posM[1]] = floor;
-        console.log("middle");
+}
+
+function deleteFloor(y0) {
+    grid[y0] = giveEmptyFloor();
+    for(var x=0; x<6; ++x) {
+        for(var z=0; z<6; ++z) {
+            for(var y=19; y>=0; --y) {
+                if(grid[y-1] !== 0) {
+                    if(grid[y] !== 0) {
+                        if(grid[y-1][x][z] !== 0) {
+                            grid[y][x][z] = grid[y-1][x][z];
+                            grid[y-1][x][z] = 0;
+                        }
+                    }
+                }
+            }
+        }
     }
-    if(grid[posR[1]] === 0) {
-        grid[posR[1]] = floor;
-        console.log("rigth");
+}
+
+function makeFloor() {
+    var y = 19
+    if(grid[y]===0) grid[y] = giveEmptyFloor();
+    for(var x=0; x<grid[y].length; ++x) {
+        for(var z=0; z<grid[y][x].length; ++z) {
+            grid[y][x][z] = [0, 0, 0];
+        }
     }
-    //grid[posL[1]][posL[0]][posL[2]] = 1;
-    grid[posM[1]][posM[0]][posM[2]] = 1;
-    //grid[posR[1]][posR[0]][posR[2]] = 1;
-    console.log(posL);
-    console.log(posM);
-    console.log(posR);
+}
+
+function giveEmptyFloor() {
+    return [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], 
+            [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
+}
+
+function restartGame() {
+    grid = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     newBeam();
 }
