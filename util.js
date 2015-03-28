@@ -177,6 +177,8 @@ function giveEmptyFloor() {
 }
 
 function restartGame() {
+    points = 0;
+    label.innerHTML = points;
     grid = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     newBeam();
 }

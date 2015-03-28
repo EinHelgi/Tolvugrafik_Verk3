@@ -9,6 +9,7 @@
 /////////////////////////////////////////////////////////////////
 var canvas;
 var gl;
+var label;
 
 var vColor;
 var vPosition;
@@ -17,6 +18,8 @@ var movement = false;     // Do we rotate?
 var pause = false;
 var tileSize = 0.2;
 var grid = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+var points = 0;
 
 var isIbeam = false;
 var isBox = true;
@@ -44,6 +47,7 @@ var mvLoc;
 window.onload = function init()
 {
     canvas = document.getElementById( "gl-canvas" );
+    label = document.getElementById( "label" );
     
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
@@ -250,6 +254,7 @@ function render()
     for(var y=0; y<grid.length; ++y) {
         if(grid[y]!==0) {
             var howMany = 0;
+            var howManyOn = 0;
             for(var x=0; x<grid[y].length; ++x) {
                 for(var z=0; z<grid[y][x].length; ++z) {
                     if(grid[y][x][z] !== 0) {
@@ -258,12 +263,18 @@ function render()
                         ctm = gotToTile(x, y, z, ctm);
                         ctm = rotateStuff(grid[y][x][z][0], grid[y][x][z][1], grid[y][x][z][2], ctm);
                         renderCube(ctm);
+                        howManyOn++;
                     }
                     else {howMany++;}
                 }
             }
             if(howMany === 36) {
                 grid[y] = 0;
+            }
+            if(howManyOn === 36) {
+                checkGrid();
+                points++;
+                label.innerHTML = points;
             }
         }
     }
