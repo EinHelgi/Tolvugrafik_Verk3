@@ -55,6 +55,7 @@ window.onload = function init()
     colorL();
     colorI();
     colorCube();
+    bufferBlack();
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 0.5, 0.0, 1.0, 1.0 );
@@ -277,6 +278,32 @@ function render()
                 label.innerHTML = points;
             }
         }
+    }
+    
+    updatePos();
+    var pos = [posL, posM, posR];
+    for(var i=0; i<pos.length; ++i) {
+        ctm = ctmstack.pop();
+        ctmstack.push(ctm);
+        ctm = gotToTile(pos[i][0], pos[i][1], 0, ctm);
+        renderBlack(ctm);
+
+        ctm = ctmstack.pop();
+        ctmstack.push(ctm);
+        ctm = gotToTile(0 , pos[i][1], pos[i][2], ctm);
+        ctm = rotateStuff(0, 90, 0, ctm);
+        renderBlack(ctm);
+
+        ctm = ctmstack.pop();
+        ctmstack.push(ctm);
+        ctm = gotToTile(pos[i][0], pos[i][1], 6, ctm);
+        renderBlack(ctm);
+
+        ctm = ctmstack.pop();
+        ctmstack.push(ctm);
+        ctm = gotToTile(6 , pos[i][1], pos[i][2], ctm);
+        ctm = rotateStuff(0, 90, 0, ctm);
+        renderBlack(ctm);
     }
     
     requestAnimFrame( render );
