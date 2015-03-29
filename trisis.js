@@ -62,6 +62,9 @@ window.onload = function init()
     
     gl.enable(gl.DEPTH_TEST);
 
+    gl.enable(gl.CULL_FACE);
+    gl.cullFace(gl.BACK);
+
     //
     //  Load shaders and initialize attribute buffers
     //
@@ -72,6 +75,7 @@ window.onload = function init()
     bufferL();
     bufferBox();
     bufferCube();
+    bufferWall();
 
     vColor = gl.getAttribLocation( program, "vColor" );
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
@@ -296,15 +300,20 @@ function render()
 
         ctm = ctmstack.pop();
         ctmstack.push(ctm);
-        ctm = gotToTile(pos[i][0], pos[i][1], 6, ctm);
+        ctm = gotToTile(pos[i][0], pos[i][1], 5, ctm);
+        ctm = rotateStuff(0, 180, 0, ctm);
         renderBlack(ctm);
 
         ctm = ctmstack.pop();
         ctmstack.push(ctm);
-        ctm = gotToTile(6 , pos[i][1], pos[i][2], ctm);
-        ctm = rotateStuff(0, 90, 0, ctm);
+        ctm = gotToTile(5 , pos[i][1], pos[i][2], ctm);
+        ctm = rotateStuff(0, 270, 0, ctm);
         renderBlack(ctm);
     }
+
+    ctm = ctmstack.pop();
+    ctmstack.push(ctm);
+    renderWall(ctm);
     
     requestAnimFrame( render );
 }

@@ -14,7 +14,7 @@ var blackCBuffer;
 
 function colorBlack()
 {
-    var p = 0.5;
+    var p = 0.49;
     var vertices = [
         vec3( -p, -p,  p ),
         vec3( -p,  p,  p ),
@@ -22,7 +22,7 @@ function colorBlack()
         vec3(  p,  p,  p )
     ];
 
-    var indices = [ 0, 1, 3, 0, 3, 2 ];
+    var indices = [0, 1, 3, 0, 3, 2 ];
 
     for ( var i = 0; i < indices.length; ++i ) {
         pointsBlack.push( vertices[indices[i]] );

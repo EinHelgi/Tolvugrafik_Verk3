@@ -66,7 +66,38 @@ function renderBox(ctm) {
     gl.bindBuffer( gl.ARRAY_BUFFER, boxVBuffer );
     gl.vertexAttribPointer( vPosition, 3, gl.FLOAT, false, 0, 0 );
 
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
+    var ctmstack = [];
+    ctmstack.push(ctm);
+    ctm = mult( ctm, translate( 0.0, 0.0, 0.6));
+    ctm = mult( ctm, scale4( 0.2, 0.2, 0.00001) );
+    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+    gl.drawArrays( gl.LINES, 0, pointsBox.length );
+
+    ctm = ctmstack.pop();
+    ctmstack.push(ctm);
+    ctm = mult( ctm, translate( 0.6, 0.0, 0.0));
+    ctm = mult( ctm, scale4( 0.00001, 0.2, 0.2) );
+    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+    gl.drawArrays( gl.LINES, 0, pointsBox.length );
+
+    ctm = ctmstack.pop();
+    ctmstack.push(ctm);
+    ctm = mult( ctm, translate( 0.0, 0.0, -0.6));
+    ctm = mult( ctm, scale4( 0.2, 0.2, 0.00001) );
+    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+    gl.drawArrays( gl.LINES, 0, pointsBox.length );
+
+    ctm = ctmstack.pop();
+    ctmstack.push(ctm);
+    ctm = mult( ctm, translate( -0.6, 0.0, 0.0));
+    ctm = mult( ctm, scale4( 0.00001, 0.2, 0.2) );
+    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+    gl.drawArrays( gl.LINES, 0, pointsBox.length );
+
+    ctm = ctmstack.pop();
+    ctmstack.push(ctm);
+    ctm = mult( ctm, translate( 0.0, -2.0, 0.0));
+    ctm = mult( ctm, scale4( 0.2, 0.00001, 0.2) );
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
     gl.drawArrays( gl.LINES, 0, pointsBox.length );
 }
