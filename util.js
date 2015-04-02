@@ -94,17 +94,17 @@ function checkIfLanding() {
         landing = true;
     }
     if(grid[posR[1]+1] !== 0 && grid[posR[1]+1] !== undefined) {
-        if(grid[posR[1]+1][posR[0]][posR[2]] !== 0) {
+        if(grid[posR[1]+1][posR[0]][posR[2]] !== 0 && grid[posR[1]+1][posR[0]][posR[2]] !== undefined) {
             landing = true;
         }
     }
     if(grid[posM[1]+1] !== 0 && grid[posM[1]+1] !== undefined) {
-        if(grid[posM[1]+1][posM[0]][posM[2]] !== 0) {
+        if(grid[posM[1]+1][posM[0]][posM[2]] !== 0 && grid[posM[1]+1][posM[0]][posM[2]] !== undefined) {
             landing = true;
         }
     }
     if(grid[posL[1]+1] !== 0 && grid[posL[1]+1] !== undefined) {
-        if(grid[posL[1]+1][posL[0]][posL[2]] !== 0) {
+        if(grid[posL[1]+1][posL[0]][posL[2]] !== 0 && grid[posL[1]+1][posL[0]][posL[2]] !== undefined) {
             landing = true;
         }
     }

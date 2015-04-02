@@ -40,7 +40,7 @@ function quadBox(a) {
                     //colors.push( vertexColors[indices[i]] );
                 
                     // for solid colored faces use 
-                    colorsBox.push([ 0.0, 0.0, 0.0, 0.3 ]);
+                    colorsBox.push([ 0.0, 0.0, 0.0, 0.6 ]);
                     
                 }
             }
@@ -60,7 +60,7 @@ function bufferBox() {
     gl.bufferData( gl.ARRAY_BUFFER, flatten(pointsBox), gl.STATIC_DRAW );
 }
 
-function renderBox(ctm) {
+function renderBox(ctm, y) {
     gl.bindBuffer( gl.ARRAY_BUFFER, boxCBuffer );
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
     gl.bindBuffer( gl.ARRAY_BUFFER, boxVBuffer );
@@ -68,36 +68,44 @@ function renderBox(ctm) {
 
     var ctmstack = [];
     ctmstack.push(ctm);
-    ctm = mult( ctm, translate( 0.0, 0.0, 0.6));
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.00001) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    gl.drawArrays( gl.LINES, 0, pointsBox.length );
+    if(!((y>95 && y<265) || (y<-95 && y>-265))) {
+        ctm = mult( ctm, translate( 0.0, 0.0, 0.599));
+        ctm = mult( ctm, scale4( 0.2, 0.2, 0.00001) );
+        gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+        gl.drawArrays( gl.LINES, 0, pointsBox.length ); //blue wall, straight ahead
+    }
+
+    if(!((y<-175 && y>-355) || (y>5 && y<175))) {
+        ctm = ctmstack.pop();
+        ctmstack.push(ctm);
+        ctm = mult( ctm, translate( 0.599, 0.0, 0.0));
+        ctm = mult( ctm, scale4( 0.00001, 0.2, 0.2) );
+        gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+        gl.drawArrays( gl.LINES, 0, pointsBox.length ); //light blue wall, left
+    }
+
+    if((y>85 && y<275) || (y<-85 && y>-275)) {
+        ctm = ctmstack.pop();
+        ctmstack.push(ctm);
+        ctm = mult( ctm, translate( 0.0, 0.0, -0.599));
+        ctm = mult( ctm, scale4( 0.2, 0.2, 0.00001) );
+        gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+        gl.drawArrays( gl.LINES, 0, pointsBox.length ); //green wall, front side
+    }
+
+    if(!((y<-5 && y>-175) || (y>185 && y<355))) {
+        ctm = ctmstack.pop();
+        ctmstack.push(ctm);
+        ctm = mult( ctm, translate( -0.599, 0.0, 0.0));
+        ctm = mult( ctm, scale4( 0.00001, 0.2, 0.2) );
+        gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+        gl.drawArrays( gl.LINES, 0, pointsBox.length ); //cyan wall, right
+    }
 
     ctm = ctmstack.pop();
     ctmstack.push(ctm);
-    ctm = mult( ctm, translate( 0.6, 0.0, 0.0));
-    ctm = mult( ctm, scale4( 0.00001, 0.2, 0.2) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    gl.drawArrays( gl.LINES, 0, pointsBox.length );
-
-    ctm = ctmstack.pop();
-    ctmstack.push(ctm);
-    ctm = mult( ctm, translate( 0.0, 0.0, -0.6));
-    ctm = mult( ctm, scale4( 0.2, 0.2, 0.00001) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    gl.drawArrays( gl.LINES, 0, pointsBox.length );
-
-    ctm = ctmstack.pop();
-    ctmstack.push(ctm);
-    ctm = mult( ctm, translate( -0.6, 0.0, 0.0));
-    ctm = mult( ctm, scale4( 0.00001, 0.2, 0.2) );
-    gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    gl.drawArrays( gl.LINES, 0, pointsBox.length );
-
-    ctm = ctmstack.pop();
-    ctmstack.push(ctm);
-    ctm = mult( ctm, translate( 0.0, -2.0, 0.0));
+    ctm = mult( ctm, translate( 0.0, -1.999, 0.0));
     ctm = mult( ctm, scale4( 0.2, 0.00001, 0.2) );
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    gl.drawArrays( gl.LINES, 0, pointsBox.length );
+    gl.drawArrays( gl.LINES, 0, pointsBox.length ); //bottom side
 }

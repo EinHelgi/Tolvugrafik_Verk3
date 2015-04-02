@@ -15,6 +15,7 @@ var vColor;
 var vPosition;
 
 var movement = false;     // Do we rotate?
+var notMoving = true;
 var pause = false;
 var tileSize = 0.2;
 var grid = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -33,8 +34,8 @@ var rotX = 0;
 var rotY = 0;
 var rotZ = 0;
 
-var spinX = -55;
-var spinY = -25;
+var spinX = 0;//-55;
+var spinY = 0;//-25;
 var origX;
 var origY;
 
@@ -202,6 +203,15 @@ window.onload = function init()
     render();
 }
 
+function findSpinY() {
+    console.log("y is: "+spinY);
+    if(spinY <= 45 && spinY >= -45 || spinY <= -315 || spinY >= 315) return 0;
+    if(spinY < 135 && spinY > 45 || spinY > -315 && spinY < -225) return 90;
+    if(spinY <= 225 && spinY >= 135 || spinY >= -225 && spinY <= -135) return 180;
+    if(spinY > -135 && spinY < -45 || spinY < 315 && spinY > 225) return 270;
+    return 0;
+}
+
 function newBeam() {
     speeding = false;
     var rot = [0, 90, 180, 270];
@@ -253,7 +263,7 @@ function render()
     if(isBox) {
         ctm = ctmstack.pop();
         ctmstack.push(ctm);
-        renderBox(ctm);
+        renderBox(ctm, spinY);
     }
 
     for(var y=0; y<grid.length; ++y) {
@@ -287,28 +297,30 @@ function render()
     updatePos();
     var pos = [posL, posM, posR];
     for(var i=0; i<pos.length; ++i) {
-        ctm = ctmstack.pop();
-        ctmstack.push(ctm);
-        ctm = gotToTile(pos[i][0], pos[i][1], 0, ctm);
-        renderBlack(ctm);
+        if(pos[i][1] >= 0) {
+            ctm = ctmstack.pop();
+            ctmstack.push(ctm);
+            ctm = gotToTile(pos[i][0], pos[i][1], 0, ctm);
+            renderBlack(ctm);
 
-        ctm = ctmstack.pop();
-        ctmstack.push(ctm);
-        ctm = gotToTile(0 , pos[i][1], pos[i][2], ctm);
-        ctm = rotateStuff(0, 90, 0, ctm);
-        renderBlack(ctm);
+            ctm = ctmstack.pop();
+            ctmstack.push(ctm);
+            ctm = gotToTile(0 , pos[i][1], pos[i][2], ctm);
+            ctm = rotateStuff(0, 90, 0, ctm);
+            renderBlack(ctm);
 
-        ctm = ctmstack.pop();
-        ctmstack.push(ctm);
-        ctm = gotToTile(pos[i][0], pos[i][1], 5, ctm);
-        ctm = rotateStuff(0, 180, 0, ctm);
-        renderBlack(ctm);
+            ctm = ctmstack.pop();
+            ctmstack.push(ctm);
+            ctm = gotToTile(pos[i][0], pos[i][1], 5, ctm);
+            ctm = rotateStuff(0, 180, 0, ctm);
+            renderBlack(ctm);
 
-        ctm = ctmstack.pop();
-        ctmstack.push(ctm);
-        ctm = gotToTile(5 , pos[i][1], pos[i][2], ctm);
-        ctm = rotateStuff(0, 270, 0, ctm);
-        renderBlack(ctm);
+            ctm = ctmstack.pop();
+            ctmstack.push(ctm);
+            ctm = gotToTile(5 , pos[i][1], pos[i][2], ctm);
+            ctm = rotateStuff(0, 270, 0, ctm);
+            renderBlack(ctm);
+        }
     }
 
     ctm = ctmstack.pop();

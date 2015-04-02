@@ -24,15 +24,22 @@ function colorWall()
         vec3(  p, -h, -p ),
         vec3(  p,  h, -p )
     ];
+    var colors = [
+        [ 0.0, 0.0, 1.0, 1.0 ],  // blue
+        [ 1.0, 1.0, 0.0, 1.0 ],  // yellow
+        [ 0.0, 1.0, 1.0, 1.0 ],  // cyan
+        [ 0.0, 1.0, 0.0, 1.0 ]  // green
+    ];
 
     var indices = [ 0, 1, 3, 0, 3, 2, 4, 5, 1, 4, 1, 0, 2, 3, 7, 2, 7, 6, 7, 5, 4, 7, 4, 6];
+    var k = -1;
 
     for ( var i = 0; i < indices.length; ++i ) {
         pointsWall.push( vertices[indices[i]] );
+        if(i%6 === 0) k++;
     
         // for solid colored faces use black
-        colorsWall.push([ 0.0, 1.0, 0.0, 1.0 ]);
-        
+        colorsWall.push(colors[k]);   
     }
 
     var indices = [4, 0, 2, 4, 2, 6];
