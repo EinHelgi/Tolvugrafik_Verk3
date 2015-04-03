@@ -4,7 +4,8 @@
 //
 //      Black í WebGL tilbúinn fyrir buffering og render
 //
-//      Einar Helgi Þrastarson Febrúar, 2015
+//      Einar Helgi Þrastarson
+//      Sigurður Birkir Sigurðsson
 /////////////////////////////////////////////////////////////////
 var colorsBlack = [];
 var pointsBlack = [];

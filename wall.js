@@ -1,7 +1,11 @@
 /////////////////////////////////////////////////////////////////
-//      gert fyrir verkefni í Tölvugrafík    
+//      gert fyrir verkefni í Tölvugrafík
 //
 //
+//      Verkefni 3
+//
+//      Einar Helgi Þrastarson Febrúar
+//      Sigurður Birkir Sigurðsson
 /////////////////////////////////////////////////////////////////
 var colorsWall = [];
 var pointsWall = [];

@@ -1,4 +1,12 @@
-
+/////////////////////////////////////////////////////////////////
+//      gert fyrir verkefni í Tölvugrafík
+//
+//
+//      Verkefni 3
+//
+//      Einar Helgi Þrastarson Febrúar
+//      Sigurður Birkir Sigurðsson
+/////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------
 // Define the transformation scale here (two scale functions in MV.js)
 function scale4( x, y, z )

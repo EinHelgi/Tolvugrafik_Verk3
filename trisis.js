@@ -3,9 +3,10 @@
 //      gert fyrir verkefni í Tölvugrafík
 //
 //
-//      Verkefni 2
+//      Verkefni 3
 //
-//      Einar Helgi Þrastarson Febrúar, 2015
+//      Einar Helgi Þrastarson Febrúar
+//      Sigurður Birkir Sigurðsson
 /////////////////////////////////////////////////////////////////
 var canvas;
 var gl;
