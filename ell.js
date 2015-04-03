@@ -27,14 +27,14 @@ function quadL(a, b, c, d)
 {
     var p = 0.48;
     var vertexColors = [
-        [ 0.0, 0.0, 0.0, 1.0 ],  // black
-        [ 1.0, 0.0, 0.0, 1.0 ],  // red
-        [ 1.0, 1.0, 0.0, 1.0 ],  // yellow
-        [ 0.0, 1.0, 0.0, 1.0 ],  // green
-        [ 0.0, 0.0, 1.0, 1.0 ],  // blue
-        [ 1.0, 0.0, 1.0, 1.0 ],  // magenta
-        [ 0.0, 1.0, 1.0, 1.0 ],  // cyan
-        [ 1.0, 1.0, 1.0, 1.0 ]   // white
+        [ 0.0, 0.0, 0.3, 1.0 ],  // black
+        [ 0.0, 0.0, 0.4, 1.0 ],  // red
+        [ 0.0, 0.0, 0.5, 1.0 ],  // yellow
+        [ 0.0, 0.0, 0.6, 1.0 ],  // green
+        [ 0.0, 0.0, 0.7, 1.0 ],  // blue
+        [ 0.0, 0.0, 0.8, 1.0 ],  // magenta
+        [ 0.0, 0.0, 0.9, 1.0 ],  // cyan
+        [ 0.0, 0.0, 1.0, 1.0 ]   // white
     ];
 
     // We need to parition the quad into two triangles in order for
