@@ -83,5 +83,5 @@ function renderI(ctm) {
 
     ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    gl.drawArrays( gl.TRIANGLES, 0, INumVertices );
+    gl.drawArrays( gl.TRIANGLES, 0, pointsI.length );
 }

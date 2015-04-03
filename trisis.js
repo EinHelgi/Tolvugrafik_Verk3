@@ -94,10 +94,10 @@ window.onload = function init()
 
     //TEXTURES OFF, ÞAÐ KEMUR BJAGAÐUR TEXTURE ÞEGAR VIÐ HÖFUM ÞÁ Á, þarf að laga í wall.js
     // Veit ekki hvort það gæti lagað error skilaboðinn, vonandi :/
-    /*
+    
     vTexCoord = gl.getAttribLocation( program, "vTexCoord" );
     gl.vertexAttribPointer( vTexCoord, 2, gl.FLOAT, false, 0, 0 );
-    gl.enableVertexAttribArray( vTexCoord );*/
+    gl.enableVertexAttribArray( vTexCoord );
 
     proLoc = gl.getUniformLocation( program, "projection" );
     mvLoc = gl.getUniformLocation( program, "modelview" );
@@ -311,7 +311,7 @@ function render()
             }
         }
     }
-    
+   
     // Wall shadows
     updatePos();
     var pos = [posL, posM, posR];

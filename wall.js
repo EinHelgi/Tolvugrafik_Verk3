@@ -66,11 +66,14 @@ function colorWall()
         colorsWall.push([ 1.0, 0.0, 1.0, 1.0 ]);
         
     }
+
 }
 
 function bufferWall() {
     colorWall();
-
+    for(var i=0; i<20000; ++i) {
+        texCoordsWall.push(vec2(0, 0));
+    }
     var wallpaper = document.getElementById("wallpaper");
     configureTexture( wallpaper );
 
@@ -91,6 +94,8 @@ function renderWall(ctm) {
 
     gl.bindBuffer( gl.ARRAY_BUFFER, wallCBuffer );
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
+    gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer );
+    gl.vertexAttribPointer( vTexCoord, 2, gl.FLOAT, false, 0, 0 );
     gl.bindBuffer( gl.ARRAY_BUFFER, wallVBuffer );
     gl.vertexAttribPointer( vPosition, 3, gl.FLOAT, false, 0, 0 );
 
