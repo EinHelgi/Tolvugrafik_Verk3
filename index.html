@@ -30,18 +30,9 @@ uniform sampler2D texture;
    
 varying vec4 fColor;
 
-uniform bool choose;
-
 void
 main()
 {
-	/*
-    if(choose) {
-    	gl_FragColor = texture2D(texture, fTexCoord);
-    }
-    else {
-    	gl_FragColor = fColor;
-    }*/
 
     gl_FragColor = fColor + texture2D(texture, fTexCoord); 
     // + gefu liti en svarta kubba!. 

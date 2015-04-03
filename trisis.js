@@ -39,8 +39,8 @@ var rotX = 0;
 var rotY = 0;
 var rotZ = 0;
 
-var spinX = 0;//-55;
-var spinY = 0;//-25;
+var spinX = -45;
+var spinY = 0;
 var origX;
 var origY;
 
@@ -98,11 +98,9 @@ window.onload = function init()
     
     vTexCoord = gl.getAttribLocation( program, "vTexCoord" );
     gl.vertexAttribPointer( vTexCoord, 2, gl.FLOAT, false, 0, 0 );
-    //gl.enableVertexAttribArray( vTexCoord );
 
     proLoc = gl.getUniformLocation( program, "projection" );
     mvLoc = gl.getUniformLocation( program, "modelview" );
-    choose = gl.getUniformLocation( program, "choose" );
     gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
 
     var proj = perspective( 50.0, 1.0, 0.2, 100.0 );
@@ -184,20 +182,13 @@ window.onload = function init()
                 break;
 
             case 66:    // "B" on/off grid
-                isBox = !isBox;
+                //isBox = !isBox;
                 break;
             case 84:    // "T" testing
-                gl.uniform1i(choose, false);
-                newBeam();
+                //newBeam();
                 break;
             case 80:    // "P" pause
                 pause = !pause;
-                break;
-            case 77:    // "M" makefloor 
-                makeFloor();
-                break;
-            case 75:    // "K" kill floor
-                checkGrid();
                 break;
         }
      }  );  
@@ -216,16 +207,9 @@ window.onload = function init()
          }
      }  );  
 
+    if(Math.random()<=0.5) isIbeam = !isIbeam;
+    updatePos();
     render();
-}
-
-function findSpinY() {
-    console.log("y is: "+spinY);
-    if(spinY <= 45 && spinY >= -45 || spinY <= -315 || spinY >= 315) return 0;
-    if(spinY < 135 && spinY > 45 || spinY > -315 && spinY < -225) return 90;
-    if(spinY <= 225 && spinY >= 135 || spinY >= -225 && spinY <= -135) return 180;
-    if(spinY > -135 && spinY < -45 || spinY < 315 && spinY > 225) return 270;
-    return 0;
 }
 
 function newBeam() {
@@ -260,7 +244,6 @@ function render()
     ctm = mult( ctm, rotate( parseFloat(spinY), [0, 1, 0] ) );
 
     ctmstack.push(ctm);
-    gl.uniform1i(choose, false);
 
     // Moving triominos
     if(isIbeam) {
@@ -346,12 +329,10 @@ function render()
         }
     }
 
-    gl.uniform1i(choose, true);
     // Wall
     ctm = ctmstack.pop();
     ctmstack.push(ctm);
     renderWall(ctm);
-    gl.uniform1i(choose, false);
     
     requestAnimFrame( render );
 }
