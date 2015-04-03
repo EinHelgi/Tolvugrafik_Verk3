@@ -109,9 +109,11 @@ function renderWall(ctm) {
     gl.vertexAttribPointer( vPosition, 3, gl.FLOAT, false, 0, 0 );
 
     ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
+    gl.enableVertexAttribArray( vTexCoord );
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
     gl.bindTexture(gl.TEXTURE_2D, textures[0]);
     gl.drawArrays( gl.TRIANGLES, 0, pointsWall.length );
     gl.bindTexture(gl.TEXTURE_2D, null);
+    gl.disableVertexAttribArray( vTexCoord );
 
 }
