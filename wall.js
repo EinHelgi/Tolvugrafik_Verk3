@@ -45,8 +45,8 @@ function colorWall()
 
     var texCo = [
         vec2(0, 0),
-        vec2(0, 1),
-        vec2(1, 1),
+        vec2(0, 3),
+        vec2(1, 3),
         vec2(1, 0)
     ];
 
@@ -69,7 +69,7 @@ function colorWall()
 
     for ( var i = 0; i < indices.length; ++i ) {
         pointsWall.push( vertices[indices[i]] );
-        texCoordsWall.push(texCo[texind[i]]);
+        //texCoordsWall.push(texCo[texind[i]]);
         
         // for solid colored faces use black
         colorsWall.push([ 1.0, 0.0, 1.0, 1.0 ]);
