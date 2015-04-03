@@ -101,5 +101,5 @@ function renderL(ctm) {
     
     ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
-    gl.drawArrays( gl.TRIANGLES, 0, pointsL.length );
+    gl.drawArrays( gl.TRIANGLES, 0, LNumVertices );
 }

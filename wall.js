@@ -36,13 +36,13 @@ function colorWall()
 
     var texCo = [
         vec2(0, 0),
-        vec2(0, 10),
-        vec2(3, 10),
-        vec2(3, 0)
+        vec2(0, 1),
+        vec2(1, 1),
+        vec2(1, 0)
     ];
 
     var indices = [ 0, 1, 3, 0, 3, 2, 4, 5, 1, 4, 1, 0, 2, 3, 7, 2, 7, 6, 7, 5, 4, 7, 4, 6];
-    var texind =  [ 1, 0, 3, 1, 3, 2, 1, 0, 3, 1, 3, 2, 1, 0, 3, 1, 3, 2, 1, 0, 3, 1, 3, 2]; // ÉG ER AÐ KLÚÐRA RÖðINNI HÉRNA
+    var texind =  [ 3, 2, 1, 3, 1, 0, 3, 2, 1, 3, 1, 0, 3, 2, 1, 3, 1, 0, 2, 1, 0, 2, 0, 3]; // ÉG ER AÐ KLÚÐRA RÖðINNI HÉRNA
     var k = -1;
 
     for ( var i = 0; i < indices.length; ++i ) {
@@ -56,7 +56,7 @@ function colorWall()
     }
 
     indices = [4, 0, 2, 4, 2, 6];
-    texind =  [1, 0, 3, 1, 3, 2]; // LÍKA HÉRNA
+    texind =  [3, 2, 1, 3, 1, 0]; // LÍKA HÉRNA
 
     for ( var i = 0; i < indices.length; ++i ) {
         pointsWall.push( vertices[indices[i]] );

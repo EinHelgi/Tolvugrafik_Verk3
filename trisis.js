@@ -17,6 +17,7 @@ var vTexCoord;
 
 var texture;
 var textures = [];
+var choose;
 
 var movement = false;     // Do we rotate?
 var notMoving = true;
@@ -101,6 +102,7 @@ window.onload = function init()
 
     proLoc = gl.getUniformLocation( program, "projection" );
     mvLoc = gl.getUniformLocation( program, "modelview" );
+    choose = gl.getUniformLocation( program, "choose" );
     gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
 
     var proj = perspective( 50.0, 1.0, 0.2, 100.0 );
@@ -185,6 +187,7 @@ window.onload = function init()
                 isBox = !isBox;
                 break;
             case 84:    // "T" testing
+                gl.uniform1i(choose, false);
                 newBeam();
                 break;
             case 80:    // "P" pause
@@ -257,6 +260,7 @@ function render()
     ctm = mult( ctm, rotate( parseFloat(spinY), [0, 1, 0] ) );
 
     ctmstack.push(ctm);
+    gl.uniform1i(choose, false);
 
     // Moving triominos
     if(isIbeam) {
@@ -342,10 +346,12 @@ function render()
         }
     }
 
+    gl.uniform1i(choose, true);
     // Wall
     ctm = ctmstack.pop();
     ctmstack.push(ctm);
     renderWall(ctm);
+    gl.uniform1i(choose, false);
     
     requestAnimFrame( render );
 }

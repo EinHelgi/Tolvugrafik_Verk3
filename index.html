@@ -30,10 +30,17 @@ uniform sampler2D texture;
    
 varying vec4 fColor;
 
+uniform bool choose;
+
 void
 main()
 {
-    gl_FragColor = fColor + texture2D(texture, fTexCoord); 
+    if(choose) {
+    	gl_FragColor = texture2D(texture, fTexCoord);
+    }
+    else {
+    	gl_FragColor = fColor;
+    } 
     // + gefu liti en svarta kubba!. 
     // * gefur hvítann vegg þegar það eru engir textures en litaða kubba, held að við viljum + ef texturar virka
     // Kubbarnir eru allavega í lagi þegar þeir ery kyrrir þegar við notum +
