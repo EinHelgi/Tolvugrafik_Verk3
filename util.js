@@ -86,7 +86,7 @@ function updatePos() {
     posR = calcPos(posR);
 }
 
-function checkIfLanding() {
+function checkIfLanding(beamtype) {
     updatePos();
     var landing = false;
     if(posR[1] === 19 || posM[1] === 19 || posL[1] === 19) {
@@ -108,10 +108,10 @@ function checkIfLanding() {
             landing = true;
         }
     }
-    if(landing) landingBeam();
+    if(landing) landingBeam(beamtype);
 }
 
-function landingBeam() {
+function landingBeam(beamtype) {
     count = 0.0;
     if(posM[1]<=0) return restartGame();
 
@@ -119,9 +119,9 @@ function landingBeam() {
     if(grid[posM[1]] === 0) grid[posM[1]] = giveEmptyFloor();
     if(grid[posR[1]] === 0) grid[posR[1]] = giveEmptyFloor();
 
-    grid[posL[1]][posL[0]][posL[2]] = [rotX, rotY, rotZ];
-    grid[posM[1]][posM[0]][posM[2]] = [rotX, rotY, rotZ];
-    grid[posR[1]][posR[0]][posR[2]] = [rotX, rotY, rotZ];
+    grid[posL[1]][posL[0]][posL[2]] = [rotX, rotY, rotZ, beamtype];
+    grid[posM[1]][posM[0]][posM[2]] = [rotX, rotY, rotZ, beamtype];
+    grid[posR[1]][posR[0]][posR[2]] = [rotX, rotY, rotZ, beamtype];
     
     newBeam();
 }

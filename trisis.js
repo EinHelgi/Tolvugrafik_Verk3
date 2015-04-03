@@ -55,7 +55,8 @@ window.onload = function init()
 
     colorL();
     colorI();
-    colorCube();
+    greenCube();
+    blueCube();
     bufferBlack();
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
@@ -75,7 +76,8 @@ window.onload = function init()
     bufferI();
     bufferL();
     bufferBox();
-    bufferCube();
+    bufferGreenCube();
+    bufferBlueCube();
     bufferWall();
 
     vColor = gl.getAttribLocation( program, "vColor" );
@@ -236,7 +238,7 @@ function render()
         count = 0;
     }
     if(count>50) {
-        checkIfLanding();
+        checkIfLanding(isIbeam);
     }
 
     var ctm = lookAt( vec3(0.0, 0.0, zDist), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0) );
@@ -245,6 +247,7 @@ function render()
 
     ctmstack.push(ctm);
 
+    // Moving triominos
     if(isIbeam) {
         ctm = ctmstack.pop();
         ctmstack.push(ctm);
@@ -260,12 +263,14 @@ function render()
         renderL(ctm);
     }
 
+    // Box
     if(isBox) {
         ctm = ctmstack.pop();
         ctmstack.push(ctm);
         renderBox(ctm, spinY);
     }
 
+    // Stopped triominos
     for(var y=0; y<grid.length; ++y) {
         if(grid[y]!==0) {
             var howMany = 0;
@@ -273,11 +278,13 @@ function render()
             for(var x=0; x<grid[y].length; ++x) {
                 for(var z=0; z<grid[y][x].length; ++z) {
                     if(grid[y][x][z] !== 0) {
+                        var beamtype = grid[y][x][z][3];
                         ctm = ctmstack.pop();
                         ctmstack.push(ctm);
                         ctm = gotToTile(x, y, z, ctm);
                         ctm = rotateStuff(grid[y][x][z][0], grid[y][x][z][1], grid[y][x][z][2], ctm);
-                        renderCube(ctm);
+                        if(beamtype) renderGreenCube(ctm);
+                        else renderBlueCube(ctm);
                         howManyOn++;
                     }
                     else {howMany++;}
@@ -294,6 +301,7 @@ function render()
         }
     }
     
+    // Wall shadows
     updatePos();
     var pos = [posL, posM, posR];
     for(var i=0; i<pos.length; ++i) {
@@ -323,6 +331,7 @@ function render()
         }
     }
 
+    // Wall
     ctm = ctmstack.pop();
     ctmstack.push(ctm);
     renderWall(ctm);
