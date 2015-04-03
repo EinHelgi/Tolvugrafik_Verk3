@@ -3,7 +3,10 @@
 <script id="vertex-shader" type="x-shader/x-vertex">
 
 attribute  vec4 vPosition;
+attribute  vec2 vTexCoord;
 attribute  vec4 vColor;
+
+varying vec2 fTexCoord;
 varying vec4 fColor;
 
 uniform mat4 projection;
@@ -11,6 +14,7 @@ uniform mat4 modelview;
 
 void main() 
 {
+	fTexCoord = vTexCoord;
     fColor = vColor;
     gl_Position = projection * modelview * vPosition;
 } 
@@ -19,13 +23,20 @@ void main()
 <script id="fragment-shader" type="x-shader/x-fragment">
 
 precision mediump float;
+
+varying vec2 fTexCoord;
+
+uniform sampler2D texture;
    
 varying vec4 fColor;
 
 void
 main()
 {
-    gl_FragColor = fColor;
+    gl_FragColor = fColor + texture2D(texture, fTexCoord); 
+    // + gefu liti en svarta kubba!. 
+    // * gefur hvítann vegg þegar það eru engir textures en litaða kubba, held að við viljum + ef texturar virka
+    // Kubbarnir eru allavega í lagi þegar þeir ery kyrrir þegar við notum +
 }
 </script>
 
@@ -48,6 +59,8 @@ main()
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
 <p>You have <label id="label">0</label> points</p>
+
+<img id = "wallpaper" src = "wallpaper.png" hidden></img>
    
 <br/>
 

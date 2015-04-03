@@ -5,9 +5,11 @@
 /////////////////////////////////////////////////////////////////
 var colorsWall = [];
 var pointsWall = [];
+var texCoordsWall = [];
 var pointsgridWall = [];
 var wallVBuffer;
 var wallCBuffer;
+var tBuffer;
 
 
 function colorWall()
@@ -24,6 +26,7 @@ function colorWall()
         vec3(  p, -h, -p ),
         vec3(  p,  h, -p )
     ];
+
     var colors = [
         [ 0.0, 0.0, 1.0, 1.0 ],  // blue
         [ 1.0, 1.0, 0.0, 1.0 ],  // yellow
@@ -31,22 +34,34 @@ function colorWall()
         [ 0.0, 1.0, 0.0, 1.0 ]  // green
     ];
 
+    var texCo = [
+        vec2(0, 0),
+        vec2(0, 10),
+        vec2(3, 10),
+        vec2(3, 0)
+    ];
+
     var indices = [ 0, 1, 3, 0, 3, 2, 4, 5, 1, 4, 1, 0, 2, 3, 7, 2, 7, 6, 7, 5, 4, 7, 4, 6];
+    var texind =  [ 1, 0, 3, 1, 3, 2, 1, 0, 3, 1, 3, 2, 1, 0, 3, 1, 3, 2, 1, 0, 3, 1, 3, 2]; // ÉG ER AÐ KLÚÐRA RÖðINNI HÉRNA
     var k = -1;
 
     for ( var i = 0; i < indices.length; ++i ) {
         pointsWall.push( vertices[indices[i]] );
+        texCoordsWall.push(texCo[texind[i]]);
+        
         if(i%6 === 0) k++;
     
         // for solid colored faces use black
         colorsWall.push(colors[k]);   
     }
 
-    var indices = [4, 0, 2, 4, 2, 6];
+    indices = [4, 0, 2, 4, 2, 6];
+    texind =  [1, 0, 3, 1, 3, 2]; // LÍKA HÉRNA
 
     for ( var i = 0; i < indices.length; ++i ) {
         pointsWall.push( vertices[indices[i]] );
-    
+        texCoordsWall.push(texCo[texind[i]]);
+        
         // for solid colored faces use black
         colorsWall.push([ 1.0, 0.0, 1.0, 1.0 ]);
         
@@ -55,6 +70,14 @@ function colorWall()
 
 function bufferWall() {
     colorWall();
+
+    var wallpaper = document.getElementById("wallpaper");
+    configureTexture( wallpaper );
+
+    tBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, tBuffer);
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(texCoordsWall), gl.STATIC_DRAW );
+   
     wallCBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, wallCBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(colorsWall), gl.STATIC_DRAW );
@@ -65,6 +88,7 @@ function bufferWall() {
 }
 
 function renderWall(ctm) {
+
     gl.bindBuffer( gl.ARRAY_BUFFER, wallCBuffer );
     gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
     gl.bindBuffer( gl.ARRAY_BUFFER, wallVBuffer );
@@ -72,5 +96,8 @@ function renderWall(ctm) {
 
     ctm = mult( ctm, scale4( 0.2, 0.2, 0.2) );
     gl.uniformMatrix4fv(mvLoc, false, flatten(ctm));
+    gl.bindTexture(gl.TEXTURE_2D, textures[0]);
     gl.drawArrays( gl.TRIANGLES, 0, pointsWall.length );
+    gl.bindTexture(gl.TEXTURE_2D, null);
+
 }

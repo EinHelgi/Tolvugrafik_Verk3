@@ -13,6 +13,10 @@ var label;
 
 var vColor;
 var vPosition;
+var vTexCoord;
+
+var texture;
+var textures = [];
 
 var movement = false;     // Do we rotate?
 var notMoving = true;
@@ -88,9 +92,16 @@ window.onload = function init()
     gl.vertexAttribPointer( vPosition, 3, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
 
+    //TEXTURES OFF, ÞAÐ KEMUR BJAGAÐUR TEXTURE ÞEGAR VIÐ HÖFUM ÞÁ Á, þarf að laga í wall.js
+    // Veit ekki hvort það gæti lagað error skilaboðinn, vonandi :/
+    /*
+    vTexCoord = gl.getAttribLocation( program, "vTexCoord" );
+    gl.vertexAttribPointer( vTexCoord, 2, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( vTexCoord );*/
 
     proLoc = gl.getUniformLocation( program, "projection" );
     mvLoc = gl.getUniformLocation( program, "modelview" );
+    gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
 
     var proj = perspective( 50.0, 1.0, 0.2, 100.0 );
     gl.uniformMatrix4fv(proLoc, false, flatten(proj));

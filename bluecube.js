@@ -67,51 +67,6 @@ function blueQuad(a, b, c, d)
     }
 }
 
-/*
-function quad(a, b, c, d) 
-{
-    var p = 0.48;
-    var vertices = [
-        vec3( -p, -p,  p ),
-        vec3( -p,  p,  p ),
-        vec3(  p,  p,  p ),
-        vec3(  p, -p,  p ),
-        vec3( -p, -p, -p ),
-        vec3( -p,  p, -p ),
-        vec3(  p,  p, -p ),
-        vec3(  p, -p, -p )
-    ];
-
-    var vertexColors = [
-        [ 0.0, 0.0, 0.0, 1.0 ],  // black
-        [ 1.0, 0.0, 0.0, 1.0 ],  // red
-        [ 1.0, 1.0, 0.0, 1.0 ],  // yellow
-        [ 0.0, 1.0, 0.0, 1.0 ],  // blue
-        [ 0.0, 0.0, 1.0, 1.0 ],  // blue
-        [ 1.0, 0.0, 1.0, 1.0 ],  // magenta
-        [ 0.0, 1.0, 1.0, 1.0 ],  // cyan
-        [ 1.0, 1.0, 1.0, 1.0 ]   // white
-    ];
-
-    // We need to parition the quad into two triangles in order for
-    // WebGL to be able to render it.  In this case, we create two
-    // triangles from the quad indices
-    
-    //vertex color assigned by the index of the vertex
-    
-    var indices = [ a, b, c, a, c, d ];
-
-    for ( var i = 0; i < indices.length; ++i ) {
-        pointsblueCube.push( vertices[indices[i]] );
-        //colors.push( vertexColors[indices[i]] );
-    
-        // for solid colored faces use 
-        colorsblueCube.push(vertexColors[a]);
-        
-    }
-}
-*/
-
 function bufferBlueCube() {
     blueCubeCBuffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, blueCubeCBuffer );
